@@ -1,0 +1,22 @@
+{
+  "balances": [
+    {
+      "iban": "LV95LATB000222PSD2001"
+    },
+    {
+      "iban": "LV68LATB000222PSD2002",
+      "currency": "USD"
+    },
+    {
+      "iban": "LV68LATB000222PSD2003"
+    }
+  ],
+  "transactions": [
+    {
+      "iban": "LV95LATB000222PSD2001"
+    },
+    {
+      "maskedPan": "123456xxxxxx1234"
+    }
+  ]
+}
