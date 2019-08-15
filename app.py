@@ -9,7 +9,7 @@ prefix = "/api/psd2/"
 
 err_resp = Response(status=401)
 url = "localhost:5002"
-api_path = "/api/psd2"
+api_path = "/api/psd2"s
 api_url = url + api_path
 
 consent = "1432-psd2-consent"
