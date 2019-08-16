@@ -25,7 +25,6 @@ headers = {
 
 
 @app.route(api_path + "/v1/consents", methods=["POST"])
-@app.route(api_path + "/v1/consents/", methods=["POST"])
 def post():
     global consent_created, current_req_id, payment_id
     restart_jsons()
@@ -61,7 +60,6 @@ def post():
 
 
 @app.route(f"{api_path}/v1/consents/{consent}/status", methods=["GET"])
-@app.route(f"{api_path}/v1/consents/{consent}/status/", methods=["GET"])
 def consent_status():
     if request.headers.get("X-Request-ID") != current_req_id or not consent_created:
         return err_resp
@@ -76,7 +74,6 @@ def consent_status():
 
 
 @app.route(f"{api_path}/v1/consents/{consent}/authorisations/{auth}", methods=["GET"])
-@app.route(f"{api_path}/v1/consents/{consent}/authorisations/{auth}/", methods=["GET"])
 def get_authorization():
     if request.headers.get("X-Request-ID") != current_req_id and not consent_create:
         return err_resp
@@ -109,7 +106,6 @@ def get_authorization():
 
 
 @app.route(api_path + "/v1/accounts", methods=["GET"])
-@app.route(api_path + "/v1/accounts/", methods=["GET"])
 def get_accounts():
     header = request.headers
     if header.get("X-Request-ID") == current_req_id and header.get("Consent-ID") == consent:
@@ -123,9 +119,7 @@ def get_accounts():
                                 "resourceId": "3dc3d5b3-7023-4848-9853-f5400a64e80f",
                                 "iban": "LV95LATB000222PSD2001",
                                 "currency": "EUR",
-                                "product": "Girokonto",
-                                "cashAccountType": "CurrentAccount",
-                                "name": "Main Account",
+                                "name": "LV95LATB000222PSD2001",
                                 "_links": {
                                     "balances": {"href": "/v1/accounts/3dc3d5b3-7023-4848-9853-f5400a64e80f/balances"},
                                     "transactions": {
@@ -135,9 +129,7 @@ def get_accounts():
                                 "resourceId": "3dc3d5b3-7023-4848-9853-f5400a64e81g",
                                 "iban": "LV68LATB000222PSD2002",
                                 "currency": "EUR",
-                                "product": "Fremdwährungskonto",
-                                "cashAccountType": "CurrentAccount",
-                                "name": "US Dollar Account",
+                                "name": "LV68LATB000222PSD2002",
                                 "_links": {
                                     "balances": {"href": "/v1/accounts/3dc3d5b3-7023-4848-9853-f5400a64e81g/balances"},
                                     "transactions": {
@@ -151,7 +143,6 @@ def get_accounts():
     return err_resp
 
 
-@app.route(api_path + "/v1/accounts/<account>/", methods=["GET"])
 @app.route(api_path + "/v1/accounts/<account>", methods=["GET"])
 def get_account(account):
     header = request.headers
@@ -218,14 +209,13 @@ def get_account(account):
 
 
 @app.route(api_path + "/v1/funds-confirmations", methods=["POST"])
-@app.route(api_path + "/v1/funds-confirmations/", methods=["POST"])
 def get_funds_confirmations():
     header = request.headers
     if header.get("X-Request-ID") == current_req_id and header.get("Consent-ID") == consent:
         headers["X-Request-ID"] = current_req_id
         headers["Content-Type"] = "application/json"
-        access = json.loads(request.data).get("access")
-        req_iban = access["iban"]
+        account = json.loads(request.data).get("account")
+        req_iban = account["iban"]
         instructed_amount = json.loads(request.data).get("instructedAmount")
         req_amount = instructed_amount["amount"]
         req_currency = instructed_amount["currency"]
@@ -239,7 +229,7 @@ def get_funds_confirmations():
             return Response(
                 json.dumps(
                     {
-                        "fundsAvailable": "false"
+                        "fundsAvailable": False
                     }),
                 status=200,
                 headers=headers
@@ -249,7 +239,7 @@ def get_funds_confirmations():
             return Response(
                 json.dumps(
                     {
-                        "fundsAvailable": "true"
+                        "fundsAvailable": True
                     }),
                 status=200,
                 headers=headers
@@ -258,7 +248,6 @@ def get_funds_confirmations():
 
 
 @app.route(api_path + "/v1/payments/sepa-credit-transfers", methods=["POST"])
-@app.route(api_path + "/v1/payments/sepa-credit-transfers/", methods=["POST"])
 def transfer_sepa_credit():
     header = request.headers
     if header.get("X-Request-ID") == current_req_id and header.get("Consent-ID") == consent \
@@ -340,21 +329,18 @@ def transfer_sepa_credit():
 
 
 def restart_jsons():
-    with open("./res/payments.json", "r+") as f2:
-        data = json.load(f2)
+    """ Getting json back to default
+    """
+    with open("./res/payments.json", "w+") as f2:
         data = {}
-        f2.seek(0)
         json.dump(data, f2, indent=4)
-        f2.truncate()
-    with open("./res/balances.json", "r+") as f2:
-        data = json.load(f2)
+
+    with open("./res/balances.json", "w+") as f2:
         data = {
             "LV95LATB000222PSD2001": {"EUR": 500},
             "LV68LATB000222PSD2003": {"EUR": 200}
         }
-        f2.seek(0)
         json.dump(data, f2, indent=4)
-        f2.truncate()
 
 
 if __name__ == '__main__':
