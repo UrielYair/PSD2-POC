@@ -267,13 +267,14 @@ def transfer_sepa_credit():
                     or req_currency not in balances[debtor_iban]:
                 return err_resp
             global payment_id
-            payment_id = payment_id + 1
+            last_payment = payment_id
+            payment_id += 1
             cur_amount_debtor = balances[debtor_iban][req_currency]
             if req_amount > cur_amount_debtor:
                 headers["X-Request-ID"] = current_req_id
                 headers["TPP-Redirect-URI"] = tpp_redirect_uri
                 headers["ASPSP-SCA-Approach"] = "REDIRECT"
-                temp_payment_id = payment_id - 1
+                temp_payment_id = last_payment
                 return Response(
                     json.dumps(
                         {
@@ -289,7 +290,7 @@ def transfer_sepa_credit():
                     headers=headers
                 )
             else:
-                temp_payment_id = payment_id - 1
+                temp_payment_id = last_payment
                 headers["X-Request-ID"] = current_req_id
                 headers["TPP-Redirect-URI"] = tpp_redirect_uri
                 headers["ASPSP-SCA-Approach"] = "REDIRECT"

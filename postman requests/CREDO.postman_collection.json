@@ -163,7 +163,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n\t\"access\":{\n\t\t\"iban\": \"LV68LATB000222PSD2003\"\n\t},\n\t\"instructedAmount\": {\n                         \"currency\": \"EUR\",\n                         \"amount\": 10000\n                        }\n}"
+					"raw": "{\n\t\"account\":{\n\t\t\"iban\": \"LV68LATB000222PSD2003\"\n\t},\n\t\"instructedAmount\": {\n                         \"currency\": \"EUR\",\n                         \"amount\": 10000\n                        }\n}"
 				},
 				"url": {
 					"raw": "http://127.0.0.1:5002/api/psd2/v1/funds-confirmations",
