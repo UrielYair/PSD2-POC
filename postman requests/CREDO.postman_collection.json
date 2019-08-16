@@ -1,0 +1,209 @@
+{
+	"info": {
+		"_postman_id": "a9d95c77-cb3e-4c0d-9c18-031b89ee9bd7",
+		"name": "CREDO",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Get concent",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "X-Request-ID",
+						"value": "123",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"access\":{\n\t\t\"balances\": [\n    \t\t\t{\n    \t\t\t\t\"iban\": \"LV95LATB000222PSD2001\"\n    \t\t\t},\n    \t\t\t{\n    \t\t\t\t\"iban\": \"LV68LATB000222PSD2002\",\n    \t\t\t\t\"currency\": \"USD\"\n    \t\t\t},\n    \t\t\t{\n    \t\t\t\t\"iban\": \"LV68LATB000222PSD2003\"\n    \t\t\t}\n\t\t],\n\t\t\"transactions\": [\n    \t\t\t{\n    \t\t\t\t\"iban\": \"LV95LATB000222PSD2001\"\n    \t\t\t},\n    \t\t\t{\n    \t\t\t\t\"maskedPan\": \"123456xxxxxx1234\"\n    \t\t\t}\n\t\t]\n\t}\n}"
+				},
+				"url": {
+					"raw": "http://127.0.0.1:5002/api/psd2/v1/consents",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "5002",
+					"path": [
+						"api",
+						"psd2",
+						"v1",
+						"consents"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get accounts list",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "X-Request-ID",
+						"value": "123",
+						"type": "text"
+					},
+					{
+						"key": "Consent-ID",
+						"value": "1432-psd2-consent",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "http://127.0.0.1:5002/api/psd2/v1/accounts",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "5002",
+					"path": [
+						"api",
+						"psd2",
+						"v1",
+						"accounts"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get account",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "X-Request-ID",
+						"value": "123",
+						"type": "text"
+					},
+					{
+						"key": "Consent-ID",
+						"value": "1432-psd2-consent",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "http://127.0.0.1:5002/api/psd2/v1/accounts/LV95LATB000222PSD2001",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "5002",
+					"path": [
+						"api",
+						"psd2",
+						"v1",
+						"accounts",
+						"LV95LATB000222PSD2001"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get fund confirmation",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "X-Request-ID",
+						"value": "123",
+						"type": "text"
+					},
+					{
+						"key": "Consent-ID",
+						"value": "1432-psd2-consent",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"account\":{\n\t\t\"iban\": \"LV68LATB000222PSD2003\"\n\t},\n\t\"instructedAmount\": {\n                         \"currency\": \"EUR\",\n                         \"amount\": 10\n                        }\n}"
+				},
+				"url": {
+					"raw": "http://127.0.0.1:5002/api/psd2/v1/funds-confirmations",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "5002",
+					"path": [
+						"api",
+						"psd2",
+						"v1",
+						"funds-confirmations"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Sepa credit transformation",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "X-Request-ID",
+						"value": "123",
+						"type": "text"
+					},
+					{
+						"key": "Consent-ID",
+						"value": "1432-psd2-consent",
+						"type": "text"
+					},
+					{
+						"key": "TPP-Redirect-URI",
+						"value": "site.com",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"access\":{\n\t\t\"iban\": \"LV68LATB000222PSD2003\"\n\t},\n\t\"instructedAmount\": {\n                         \"currency\": \"EUR\",\n                         \"amount\": 100\n                        },\n    \"debtorAccount\": {\n\t\t\t\t\t\t\"iban\": \"LV68LATB000222PSD2003\"\n\t\t\t\t\t}, \n\t\"creditorName\": \"MerchantXYZ\", \n\t\"creditorAccount\": {\n\t\"iban\": \"LV95LATB000222PSD2001\"\n\t}\n}"
+				},
+				"url": {
+					"raw": "http://127.0.0.1:5002/api/psd2/v1/payments/sepa-credit-transfers",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "5002",
+					"path": [
+						"api",
+						"psd2",
+						"v1",
+						"payments",
+						"sepa-credit-transfers"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
